@@ -9,7 +9,12 @@ import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
 import { LinkButton } from '@/components/ui/link-button'
-import TerminalWindow from '@/components/terminal-window'
+import WhoamiTerminal from '@/components/terminals/whoami-terminal'
+import ExperienceTerminal from '@/components/terminals/experience-terminal'
+import SkillsTerminal from '@/components/terminals/skills-terminal'
+import ProjectsTerminal from '@/components/terminals/projects-terminal'
+import AboutTerminal from '@/components/terminals/about-terminal'
+import ContactTerminal from '@/components/terminals/contact-terminal'
 import { socialMediaConfig } from '@/lib/social'
 
 export default function Portfolio() {
@@ -161,33 +166,86 @@ export default function Portfolio() {
 
   return (
     <main className='min-h-screen bg-background text-white overflow-hidden'>
+      {/* Intro Section */}
       <section
         id='home'
         className='py-20 px-6'
       >
         <div className='max-w-6xl mx-auto'>
-          <Image
-            src='/sean-davis.png'
-            alt='Sean Davis'
-            width={400}
-            height={400}
-            style={{
-              filter: 'grayscale(80%)',
-            }}
-          />
-          <h1 className='text-4xl font-bold'>Sean Davis</h1>
-          <p className='text-lg text-muted-foreground'>
-            I'm a frontend engineer specializing in Next.js, TypeScript, and e-commerce solutions.
-          </p>
+          <div className='flex flex-col lg:flex-row gap-12 items-center'>
+            <div className='flex-shrink-0'>
+              <Image
+                src='/sean-davis.JPEG'
+                alt='Sean Davis'
+                width={350}
+                height={450}
+                className='rounded-lg'
+                style={{
+                  filter: 'grayscale(50%)',
+                  // boxShadow: '0 0 15px 5px rgba(0, 0, 0, 0.5)',
+                }}
+              />
+            </div>
+            <div className='flex-1'>
+              <WhoamiTerminal />
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Experience Section */}
+      <section
+        id='experience'
+        className='py-20 px-6'
+      >
+        <div className='max-w-6xl mx-auto'>
+          <h2 className='text-3xl font-bold text-center mb-12'>Experience</h2>
+          <ExperienceTerminal />
+        </div>
+      </section>
+
+      {/* Skills Section */}
       <section
         id='skills'
         className='py-20 px-6'
       >
-        <TerminalWindow>
-          <p>Skills</p>
-        </TerminalWindow>
+        <div className='max-w-6xl mx-auto'>
+          <h2 className='text-3xl font-bold text-center mb-12'>Skills</h2>
+          <SkillsTerminal />
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section
+        id='projects'
+        className='py-20 px-6'
+      >
+        <div className='max-w-6xl mx-auto'>
+          <h2 className='text-3xl font-bold text-center mb-12'>Projects</h2>
+          <ProjectsTerminal />
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section
+        id='about'
+        className='py-20 px-6'
+      >
+        <div className='max-w-6xl mx-auto'>
+          <h2 className='text-3xl font-bold text-center mb-12'>About</h2>
+          <AboutTerminal />
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section
+        id='contact'
+        className='py-20 px-6'
+      >
+        <div className='max-w-6xl mx-auto'>
+          <h2 className='text-3xl font-bold text-center mb-12'>Contact</h2>
+          <ContactTerminal />
+        </div>
       </section>
     </main>
   )
