@@ -1,176 +1,77 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { ArrowRight, ExternalLink, MapPin, Calendar, Code, Palette, Zap, Users, Icon } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
-import Link from 'next/link'
-import { LinkButton } from '@/components/ui/link-button'
 import WhoamiTerminal from '@/components/terminals/whoami-terminal'
 import ExperienceTerminal from '@/components/terminals/experience-terminal'
 import SkillsTerminal from '@/components/terminals/skills-terminal'
 import ProjectsTerminal from '@/components/terminals/projects-terminal'
 import AboutTerminal from '@/components/terminals/about-terminal'
 import ContactTerminal from '@/components/terminals/contact-terminal'
-import { socialMediaConfig } from '@/lib/social'
+import { useMultipleScrollTriggers } from '@/hooks/use-scroll-triggered-animation'
 
 export default function Portfolio() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const { scrollYProgress } = useScroll()
-  const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%'])
+  // Create scroll triggers for each terminal
+  const terminalTriggers = useMultipleScrollTriggers(6, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -200px 0px',
+  })
 
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', updateMousePosition)
-    return () => window.removeEventListener('mousemove', updateMousePosition)
-  }, [])
-
-  const skillsData = [
+  const terminalConfigs = [
     {
-      category: 'Frontend Mastery',
-      icon: Code,
-      skills: [
-        {
-          name: 'Next.js',
-          achievement: 'Built 15+ production apps',
-          metric: '95+ Lighthouse scores',
-        },
-        {
-          name: 'TypeScript',
-          achievement: '100% type coverage',
-          metric: 'Zero runtime errors',
-        },
-        {
-          name: 'React',
-          achievement: '5+ years experience',
-          metric: 'Component libraries',
-        },
-      ],
-      color: 'emerald',
+      component: WhoamiTerminal,
+      title: 'whoami',
+      offset: {
+        desktop: { x: 0, y: 0 },
+        mobile: { x: 0, y: 0 },
+      },
     },
     {
-      category: 'E-commerce Expertise',
-      icon: Users,
-      skills: [
-        {
-          name: 'Payment Integration',
-          achievement: 'Stripe, PayPal, Apple Pay',
-          metric: '25% cart recovery',
-        },
-        {
-          name: 'Global Commerce',
-          achievement: '15+ languages, RTL',
-          metric: 'Millions of users',
-        },
-        {
-          name: 'Performance',
-          achievement: 'Sub-2s load times',
-          metric: '99.9% uptime',
-        },
-      ],
-      color: 'blue',
+      component: ExperienceTerminal,
+      title: 'experience',
+      offset: {
+        desktop: { x: 30, y: 40 },
+        mobile: { x: 10, y: 15 },
+      },
     },
     {
-      category: 'Design & UX',
-      icon: Palette,
-      skills: [
-        {
-          name: 'Responsive Design',
-          achievement: 'Mobile-first approach',
-          metric: 'All device types',
-        },
-        {
-          name: 'Accessibility',
-          achievement: 'WCAG 2.1 AA compliant',
-          metric: 'Screen reader tested',
-        },
-        {
-          name: 'Animation',
-          achievement: 'Framer Motion expert',
-          metric: 'Smooth 60fps',
-        },
-      ],
-      color: 'teal',
+      component: SkillsTerminal,
+      title: 'skills',
+      offset: {
+        desktop: { x: 60, y: 80 },
+        mobile: { x: 20, y: 30 },
+      },
     },
     {
-      category: 'Backend & Tools',
-      icon: Zap,
-      skills: [
-        {
-          name: 'Node.js',
-          achievement: 'API development',
-          metric: 'RESTful & GraphQL',
-        },
-        {
-          name: 'Database',
-          achievement: 'PostgreSQL, MongoDB',
-          metric: 'Optimized queries',
-        },
-        {
-          name: 'DevOps',
-          achievement: 'CI/CD pipelines',
-          metric: 'Vercel, AWS',
-        },
-      ],
-      color: 'cyan',
-    },
-  ]
-
-  const socialLinks = socialMediaConfig
-
-  const projects = [
-    {
-      title: 'Real Madrid Official Store',
-      description:
-        "Led frontend development for Real Madrid's e-commerce platform, handling millions of global fans with seamless checkout flows and multilingual support.",
-      tech: ['Next.js', 'TypeScript', 'Stripe', 'Contentful'],
-      image: '/rm-preview.png',
-      link: 'https://shop.realmadrid.com/',
-      // github: '#',
-      featured: true,
+      component: ProjectsTerminal,
+      title: 'projects',
+      offset: {
+        desktop: { x: 90, y: 120 },
+        mobile: { x: 30, y: 45 },
+      },
     },
     {
-      title: 'Borussia Dortmund Fan Experience',
-      description:
-        'Built interactive fan engagement platform with real-time match updates, merchandise integration, and social features.',
-      tech: ['Microservices', 'Next.js', 'Auth SSO', 'PostgreSQL'],
-      image: '/bvb-preview.png',
-      link: 'https://shop.bvb.de/',
-      // github: '#',
-      featured: true,
+      component: AboutTerminal,
+      title: 'about',
+      offset: {
+        desktop: { x: 120, y: 160 },
+        mobile: { x: 40, y: 60 },
+      },
     },
     {
-      title: 'Bible Recall',
-      description: 'Memorization app designed to help users learn and retain Bible verses through spaced repetition.',
-      tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Auth'],
-      image: '/biblerecall.png',
-      link: 'https://biblerecall.app/',
-      github: 'https://github.com/sdavisde/biblerecall-v2',
-      featured: false,
-    },
-    {
-      title: 'QueryBase',
-      description: 'AI-powered knowledge base for creating developer documentation and FAQs.',
-      tech: ['AI', 'Next.js', 'Supabase', 'Tailwind'],
-      image: '/querybase-preview.png',
-      link: 'https://querybase-ten.vercel.app/',
-      github: 'https://github.com/sdavisde/querybase',
-      featured: false,
+      component: ContactTerminal,
+      title: 'contact',
+      offset: {
+        desktop: { x: 150, y: 200 },
+        mobile: { x: 50, y: 75 },
+      },
     },
   ]
 
   return (
-    <main className='min-h-screen bg-background text-white overflow-hidden'>
-      {/* Intro Section */}
-      <section
-        id='home'
-        className='py-20 px-6'
-      >
+    <main className='min-h-screen bg-background text-white overflow-x-hidden'>
+      {/* Hero Background Section - Fixed at top */}
+      <section className='fixed top-0 left-0 w-full h-screen flex items-center justify-center px-6 z-0'>
         <div className='max-w-6xl mx-auto'>
           <div className='flex flex-col lg:flex-row gap-12 items-center'>
             <div className='flex-shrink-0'>
@@ -182,71 +83,89 @@ export default function Portfolio() {
                 className='rounded-lg'
                 style={{
                   filter: 'grayscale(50%)',
-                  // boxShadow: '0 0 15px 5px rgba(0, 0, 0, 0.5)',
                 }}
               />
             </div>
-            <div className='flex-1'>
-              <WhoamiTerminal />
+            <div className='flex-1 text-center lg:text-left'>
+              <h1 className='text-4xl lg:text-6xl font-bold mb-4'>Sean Davis</h1>
+              <p className='text-xl text-muted-foreground'>Full Stack Developer & Software Engineer</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section
-        id='experience'
-        className='py-20 px-6'
-      >
-        <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12'>Experience</h2>
-          <ExperienceTerminal />
-        </div>
-      </section>
+      {/* Fixed Terminal Stack */}
+      <div className='fixed top-0 left-0 w-full h-screen flex items-center justify-center z-10'>
+        {terminalConfigs.map((config, index) => {
+          const [, state] = terminalTriggers[index]
+          const TerminalComponent = config.component
 
-      {/* Skills Section */}
-      <section
-        id='skills'
-        className='py-20 px-6'
-      >
-        <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12'>Skills</h2>
-          <SkillsTerminal />
-        </div>
-      </section>
+          // Use different offsets based on screen size
+          const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+          const currentOffset = isMobile ? config.offset.mobile : config.offset.desktop
 
-      {/* Projects Section */}
-      <section
-        id='projects'
-        className='py-20 px-6'
-      >
-        <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12'>Projects</h2>
-          <ProjectsTerminal />
-        </div>
-      </section>
+          return (
+            <div
+              key={config.title}
+              className='absolute inset-0 flex items-center justify-center'
+              style={{
+                zIndex: 50 - index,
+              }}
+            >
+              <div className='max-w-4xl w-full mx-4 px-2 sm:px-0'>
+                <TerminalComponent
+                  animate={true}
+                  animationProps={{
+                    initial: {
+                      opacity: 0,
+                      scale: 0.9,
+                      x: currentOffset.x,
+                      y: currentOffset.y,
+                    },
+                    animate: {
+                      opacity: state.hasBeenVisible ? 1 : 0,
+                      scale: state.hasBeenVisible ? 1 : 0.9,
+                      x: currentOffset.x,
+                      y: currentOffset.y,
+                    },
+                    transition: {
+                      duration: 0.6,
+                      delay: state.animationDelay / 1000,
+                      ease: [0.25, 0.46, 0.45, 0.94],
+                    },
+                    style: {
+                      filter: state.hasBeenVisible ? 'none' : 'blur(1px)',
+                      boxShadow: state.hasBeenVisible
+                        ? `${Math.abs(currentOffset.x) * 0.2}px ${
+                            Math.abs(currentOffset.y) * 0.2
+                          }px 25px rgba(0, 0, 0, 0.4)`
+                        : '0 0 10px rgba(0, 0, 0, 0.2)',
+                    },
+                  }}
+                />
+              </div>
+            </div>
+          )
+        })}
+      </div>
 
-      {/* About Section */}
-      <section
-        id='about'
-        className='py-20 px-6'
+      {/* Invisible scroll triggers */}
+      <div
+        className='relative z-0'
+        style={{ height: '600vh' }}
       >
-        <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12'>About</h2>
-          <AboutTerminal />
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section
-        id='contact'
-        className='py-20 px-6'
-      >
-        <div className='max-w-6xl mx-auto'>
-          <h2 className='text-3xl font-bold text-center mb-12'>Contact</h2>
-          <ContactTerminal />
-        </div>
-      </section>
+        {terminalConfigs.map((config, index) => {
+          const [ref] = terminalTriggers[index]
+          return (
+            <div
+              key={`trigger-${config.title}`}
+              ref={ref}
+              style={{ height: '100vh' }}
+              className='w-full'
+            />
+          )
+        })}
+      </div>
     </main>
   )
 }

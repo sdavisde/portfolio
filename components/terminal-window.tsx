@@ -1,10 +1,13 @@
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface TerminalWindowProps {
   title?: string;
   className?: string;
   children: React.ReactNode;
   width?: "full" | "lg" | "md" | "sm";
+  animate?: boolean;
+  animationProps?: any;
 }
 
 export default function TerminalWindow({
@@ -12,6 +15,8 @@ export default function TerminalWindow({
   className,
   children,
   width = "full",
+  animate = false,
+  animationProps = {},
 }: TerminalWindowProps) {
   const widthClasses = {
     full: "w-full",
@@ -20,14 +25,17 @@ export default function TerminalWindow({
     sm: "w-full max-w-lg",
   };
 
+  const Component = animate ? motion.div : 'div';
+
   return (
-    <div
+    <Component
       className={cn(
         "bg-card border border-card-border rounded-lg shadow-lg overflow-hidden",
         widthClasses[width],
         className,
       )}
       data-testid="terminal-window"
+      {...(animate ? animationProps : {})}
     >
       {/* Terminal Header */}
       <div className="bg-muted border-b border-card-border px-4 py-3 flex items-center gap-3">
@@ -60,6 +68,6 @@ export default function TerminalWindow({
       <div className="bg-background text-foreground p-4 md:p-6 font-mono text-sm md:text-base leading-relaxed min-h-[200px]">
         {children}
       </div>
-    </div>
+    </Component>
   );
 }

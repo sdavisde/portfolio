@@ -1,10 +1,12 @@
 import TerminalWindow from '@/components/terminal-window'
 
-export default function ExperienceTerminal() {
+export default function ExperienceTerminal({ animate, animationProps }: { animate?: boolean; animationProps?: any }) {
   return (
     <TerminalWindow
       title='experience.log'
       width='lg'
+      animate={animate}
+      animationProps={animationProps}
     >
       <div className='space-y-6'>
         <div>

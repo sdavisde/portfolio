@@ -1,10 +1,12 @@
 import TerminalWindow from '@/components/terminal-window'
 
-export default function ProjectsTerminal() {
+export default function ProjectsTerminal({ animate, animationProps }: { animate?: boolean; animationProps?: any }) {
   return (
     <TerminalWindow
       title='projects.md'
       width='lg'
+      animate={animate}
+      animationProps={animationProps}
     >
       <div className='space-y-6'>
         <div>

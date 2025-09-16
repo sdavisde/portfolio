@@ -1,10 +1,12 @@
 import TerminalWindow from '@/components/terminal-window'
 
-export default function WhoamiTerminal() {
+export default function WhoamiTerminal({ animate, animationProps }: { animate?: boolean; animationProps?: any }) {
   return (
     <TerminalWindow
       title='whoami'
       width='lg'
+      animate={animate}
+      animationProps={animationProps}
     >
       <div className='space-y-4'>
         <div>

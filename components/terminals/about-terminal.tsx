@@ -1,10 +1,12 @@
 import TerminalWindow from '@/components/terminal-window'
 
-export default function AboutTerminal() {
+export default function AboutTerminal({ animate, animationProps }: { animate?: boolean; animationProps?: any }) {
   return (
     <TerminalWindow
       title='about.txt'
       width='lg'
+      animate={animate}
+      animationProps={animationProps}
     >
       <div className='space-y-4'>
         <div>

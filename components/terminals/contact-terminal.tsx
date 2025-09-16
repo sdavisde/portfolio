@@ -1,10 +1,12 @@
 import TerminalWindow from '@/components/terminal-window'
 
-export default function ContactTerminal() {
+export default function ContactTerminal({ animate, animationProps }: { animate?: boolean; animationProps?: any }) {
   return (
     <TerminalWindow
       title='contact.sh'
       width='lg'
+      animate={animate}
+      animationProps={animationProps}
     >
       <div className='space-y-4'>
         <div>
