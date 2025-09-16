@@ -109,7 +109,7 @@ export default function Portfolio() {
               key={config.title}
               className='absolute inset-0 flex items-center justify-center'
               style={{
-                zIndex: 50 - index,
+                zIndex: 50 + index,
               }}
             >
               <div className='max-w-4xl w-full mx-4 px-2 sm:px-0'>
