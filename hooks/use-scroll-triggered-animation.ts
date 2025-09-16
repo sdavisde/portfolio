@@ -13,12 +13,12 @@ interface ScrollTriggerState {
 
 export function useScrollTriggeredAnimation(
   options: ScrollTriggerOptions = {}
-): [RefObject<HTMLDivElement>, ScrollTriggerState] {
+): [RefObject<HTMLDivElement | null>, ScrollTriggerState] {
   const { threshold = 0.1, rootMargin = '0px 0px -100px 0px' } = options
   const [state, setState] = useState<ScrollTriggerState>({
     isVisible: false,
     hasBeenVisible: false,
-    animationDelay: 0
+    animationDelay: 0,
   })
   const ref = useRef<HTMLDivElement>(null)
 
@@ -29,15 +29,15 @@ export function useScrollTriggeredAnimation(
     const observer = new IntersectionObserver(
       ([entry]) => {
         const isVisible = entry.isIntersecting
-        setState(prev => ({
+        setState((prev) => ({
           ...prev,
           isVisible,
-          hasBeenVisible: prev.hasBeenVisible || isVisible
+          hasBeenVisible: prev.hasBeenVisible || isVisible,
         }))
       },
       {
         threshold,
-        rootMargin
+        rootMargin,
       }
     )
 

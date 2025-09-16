@@ -123,8 +123,8 @@ export default function Portfolio() {
                       y: currentOffset.y,
                     },
                     animate: {
-                      opacity: state.hasBeenVisible ? 1 : 0,
-                      scale: state.hasBeenVisible ? 1 : 0.9,
+                      opacity: state.isVisible ? 1 : 0,
+                      scale: state.isVisible ? 1 : 0.9,
                       x: currentOffset.x,
                       y: currentOffset.y,
                     },
@@ -134,8 +134,8 @@ export default function Portfolio() {
                       ease: [0.25, 0.46, 0.45, 0.94],
                     },
                     style: {
-                      filter: state.hasBeenVisible ? 'none' : 'blur(1px)',
-                      boxShadow: state.hasBeenVisible
+                      filter: state.isVisible ? 'none' : 'blur(1px)',
+                      boxShadow: state.isVisible
                         ? `${Math.abs(currentOffset.x) * 0.2}px ${
                             Math.abs(currentOffset.y) * 0.2
                           }px 25px rgba(0, 0, 0, 0.4)`
