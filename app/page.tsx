@@ -88,7 +88,9 @@ export default function Portfolio() {
             </div>
             <div className='flex-1 text-center lg:text-left'>
               <h1 className='text-4xl lg:text-6xl font-bold mb-4'>Sean Davis</h1>
-              <p className='text-xl text-muted-foreground'>Full Stack Developer & Software Engineer</p>
+              <p className='text-xl text-primary'>&gt; Software Engineer</p>
+              <p className='text-xl text-muted-foreground'>&gt; Guitarist</p>
+              <p className='text-xl text-muted-foreground'>&gt; Dad</p>
             </div>
           </div>
         </div>
