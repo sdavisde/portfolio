@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import { motion } from 'framer-motion'
 
 interface TerminalEntry {
@@ -12,6 +12,10 @@ interface TerminalEntry {
 
 interface CommandResponse {
   output: string[]
+}
+
+export interface InteractiveTerminalRef {
+  executeCommand: (command: string) => void
 }
 
 const commands: Record<string, CommandResponse> = {
@@ -171,7 +175,7 @@ const hints = [
   'Use "contact" to get in touch',
 ]
 
-export default function InteractiveTerminal() {
+const InteractiveTerminal = forwardRef<InteractiveTerminalRef>((props, ref) => {
   const [entries, setEntries] = useState<TerminalEntry[]>([
     {
       type: 'hint',
@@ -278,6 +282,11 @@ export default function InteractiveTerminal() {
     }, 100)
   }
 
+  // Expose executeCommand method to parent components
+  useImperativeHandle(ref, () => ({
+    executeCommand
+  }))
+
   const handleContainerClick = () => {
     if (inputRef.current) {
       inputRef.current.focus()
@@ -332,4 +341,8 @@ export default function InteractiveTerminal() {
       />
     </div>
   )
-}
+})
+
+InteractiveTerminal.displayName = 'InteractiveTerminal'
+
+export default InteractiveTerminal

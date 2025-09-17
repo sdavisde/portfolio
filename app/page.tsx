@@ -1,7 +1,18 @@
+'use client'
+
+import { useRef } from 'react'
 import Image from 'next/image'
-import InteractiveTerminal from '@/components/interactive-terminal'
+import InteractiveTerminal, { InteractiveTerminalRef } from '@/components/interactive-terminal'
+import TerminalCommandIcons from '@/components/terminal-command-icons'
 
 export default function Portfolio() {
+  const terminalRef = useRef<InteractiveTerminalRef>(null)
+
+  const handleIconCommand = (command: string) => {
+    if (terminalRef.current) {
+      terminalRef.current.executeCommand(command)
+    }
+  }
   return (
     <main className='min-h-screen bg-background text-white'>
       {/* Hero Section */}
@@ -28,9 +39,10 @@ export default function Portfolio() {
             </div>
             <div className='flex-1 text-center lg:text-left'>
               <h1 className='text-4xl lg:text-6xl font-bold mb-6'>Sean Davis</h1>
-              <p className='italic text-muted-foreground mb-2'>Try typing "help" to see available commands</p>
+              <p className='italic text-muted-foreground mb-2'>Try typing commands or click the icons below</p>
               <div className='bg-black/40 border border-primary/20 rounded-lg p-6 backdrop-blur-sm w-full max-w-[600px] mx-auto lg:mx-0'>
-                <InteractiveTerminal />
+                <InteractiveTerminal ref={terminalRef} />
+                <TerminalCommandIcons onCommandClick={handleIconCommand} />
               </div>
             </div>
           </div>
