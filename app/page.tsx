@@ -31,7 +31,10 @@ export default function Portfolio() {
   return (
     <main className='min-h-screen bg-background text-white relative'>
       {/* Matrix Rain Background */}
-      <MatrixRain opacity={0.15} density={0.7} />
+      <MatrixRain
+        opacity={0.15}
+        density={0.7}
+      />
 
       {/* Hero Section */}
       <section className='min-h-screen flex items-center justify-center px-6 relative z-10'>
@@ -57,9 +60,12 @@ export default function Portfolio() {
             </div>
             <div className='flex-1 text-center lg:text-left'>
               <h1 className='text-4xl lg:text-6xl font-bold mb-6'>Sean Davis</h1>
-              <p className='italic text-muted-foreground mb-2'>Try typing commands or click the icons below</p>
+              <p className='italic text-muted-foreground mb-2'>Try typing "help" or click the icons below</p>
               <div className='bg-black/40 border border-primary/20 rounded-lg p-6 backdrop-blur-sm w-full max-w-[600px] mx-auto lg:mx-0'>
-                <InteractiveTerminal ref={terminalRef} onCommandExecute={handleTerminalCommand} />
+                <InteractiveTerminal
+                  ref={terminalRef}
+                  onCommandExecute={handleTerminalCommand}
+                />
                 <TerminalCommandIcons onCommandClick={handleIconCommand} />
               </div>
             </div>

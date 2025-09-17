@@ -128,18 +128,18 @@ const commands: Record<string, CommandResponse> = {
       '',
       "I'm a software engineer passionate about building scalable,",
       'efficient, and human-centered applications. With over 4 years',
-      'of experience, I\'ve worked on everything from high-traffic',
+      "of experience, I've worked on everything from high-traffic",
       'e-commerce platforms to personal projects that solve real-world',
       'problems.',
       '',
       'My approach focuses on clarity, efficiency, and human-centered',
       'design. I believe in writing clean, maintainable code and',
-      'creating experiences that users love. Whether it\'s optimizing',
+      "creating experiences that users love. Whether it's optimizing",
       'a checkout flow for millions of users or building a simple CLI',
       'tool, I bring the same attention to detail and commitment to',
       'quality.',
       '',
-      'When I\'m not coding, you\'ll find me exploring new technologies,',
+      "When I'm not coding, you'll find me exploring new technologies,",
       'contributing to open source projects, or working on personal',
       'initiatives that combine my technical skills with my interests',
       'in AI, productivity tools, and community impact.',
@@ -153,13 +153,10 @@ const commands: Record<string, CommandResponse> = {
       '',
       '=== CONTACT INFORMATION ===',
       '',
-      '📧 Email: sean@example.com',
-      '💼 LinkedIn: linkedin.com/in/seandavis',
+      '📧 Email: sdavisde@gmail.com',
+      '💼 LinkedIn: linkedin.com/in/sean-davis-dan/',
       '🐙 GitHub: github.com/sdavisde',
-      '🌍 Location: Remote / Available for relocation',
-      '',
-      '💡 Ready to collaborate on your next project!',
-      '',
+      '🌍 Location: Remote - Based out of College Station, TX',
     ],
   },
   pwd: {
@@ -179,193 +176,197 @@ const hints = [
   'Use "contact" to get in touch',
 ]
 
-const InteractiveTerminal = forwardRef<InteractiveTerminalRef, InteractiveTerminalProps>(({ onCommandExecute }, ref) => {
-  const [entries, setEntries] = useState<TerminalEntry[]>([
-    {
-      type: 'hint',
-      text: 'Try typing "help" to see available commands',
-      id: 'hint-0',
-    },
-  ])
-  const [currentInput, setCurrentInput] = useState('')
-  const [showCursor, setShowCursor] = useState(true)
-  const [hintIndex, setHintIndex] = useState(0)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const terminalRef = useRef<HTMLDivElement>(null)
+const InteractiveTerminal = forwardRef<InteractiveTerminalRef, InteractiveTerminalProps>(
+  ({ onCommandExecute }, ref) => {
+    const [entries, setEntries] = useState<TerminalEntry[]>([
+      {
+        type: 'hint',
+        text: 'Try typing "help" to see available commands',
+        id: 'hint-0',
+      },
+    ])
+    const [currentInput, setCurrentInput] = useState('')
+    const [showCursor, setShowCursor] = useState(true)
+    const [hintIndex, setHintIndex] = useState(0)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const terminalRef = useRef<HTMLDivElement>(null)
 
-  // Cursor blink effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShowCursor((prev) => !prev)
-    }, 530)
-    return () => clearInterval(interval)
-  }, [])
+    // Cursor blink effect
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setShowCursor((prev) => !prev)
+      }, 530)
+      return () => clearInterval(interval)
+    }, [])
 
-  // Auto-focus input and cycle hints
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
+    // Auto-focus input and cycle hints
+    useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+
+      // Cycle hints every 5 seconds if no commands have been entered
+      const hintTimer = setInterval(() => {
+        const hasCommands = entries.some((entry) => entry.type === 'command')
+        if (!hasCommands) {
+          const nextIndex = (hintIndex + 1) % hints.length
+          setHintIndex(nextIndex)
+          setEntries([
+            {
+              type: 'hint',
+              text: hints[nextIndex],
+              id: `hint-${Date.now()}`,
+            },
+          ])
+        }
+      }, 5000)
+
+      return () => clearInterval(hintTimer)
+    }, [hintIndex, entries])
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        executeCommand(currentInput.trim())
+        setCurrentInput('')
+      }
     }
 
-    // Cycle hints every 5 seconds if no commands have been entered
-    const hintTimer = setInterval(() => {
-      const hasCommands = entries.some((entry) => entry.type === 'command')
-      if (!hasCommands) {
-        const nextIndex = (hintIndex + 1) % hints.length
-        setHintIndex(nextIndex)
+    const executeCommand = (command: string) => {
+      if (!command) return
+
+      const newEntries: TerminalEntry[] = []
+
+      // Add the command entry
+      newEntries.push({
+        type: 'command',
+        prompt: 'guest@sean-davis:~$',
+        text: command,
+        id: `cmd-${Date.now()}`,
+      })
+
+      // Handle special commands
+      if (command.toLowerCase() === 'clear') {
         setEntries([
           {
             type: 'hint',
-            text: hints[nextIndex],
+            text: 'Terminal cleared. Type "help" for available commands.',
             id: `hint-${Date.now()}`,
           },
         ])
+        return
       }
-    }, 5000)
 
-    return () => clearInterval(hintTimer)
-  }, [hintIndex, entries])
+      // Commands that should open modal (detailed content)
+      const modalCommands = ['experience', 'skills', 'projects', 'about', 'contact']
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      executeCommand(currentInput.trim())
-      setCurrentInput('')
-    }
-  }
+      // Commands that should display inline in terminal
+      const inlineCommands = ['help', 'whoami', 'pwd', 'date']
 
-  const executeCommand = (command: string) => {
-    if (!command) return
-
-    const newEntries: TerminalEntry[] = []
-
-    // Add the command entry
-    newEntries.push({
-      type: 'command',
-      prompt: 'guest@sean-davis:~$',
-      text: command,
-      id: `cmd-${Date.now()}`,
-    })
-
-    // Handle special commands
-    if (command.toLowerCase() === 'clear') {
-      setEntries([
-        {
-          type: 'hint',
-          text: 'Terminal cleared. Type "help" for available commands.',
-          id: `hint-${Date.now()}`,
-        },
-      ])
-      return
-    }
-
-    // Commands that should open modal (detailed content)
-    const modalCommands = ['experience', 'skills', 'projects', 'about', 'contact']
-
-    // Commands that should display inline in terminal
-    const inlineCommands = ['help', 'whoami', 'pwd', 'date']
-
-    if (modalCommands.includes(command.toLowerCase())) {
-      // Add brief output and trigger modal
-      newEntries.push({
-        type: 'output',
-        text: `Opening ${command} details...`,
-        id: `output-${Date.now()}`,
-      })
-
-      // Trigger modal callback
-      if (onCommandExecute) {
-        onCommandExecute(command.toLowerCase())
-      }
-    } else {
-      // Handle inline commands and other commands normally
-      const response = commands[command.toLowerCase()]
-      if (response) {
-        response.output.forEach((line, index) => {
-          newEntries.push({
-            type: 'output',
-            text: line,
-            id: `output-${Date.now()}-${index}`,
-          })
-        })
-      } else {
+      if (modalCommands.includes(command.toLowerCase())) {
+        // Add brief output and trigger modal
         newEntries.push({
           type: 'output',
-          text: `Command not found: ${command}. Type "help" for available commands.`,
-          id: `error-${Date.now()}`,
+          text: `Opening ${command} details...`,
+          id: `output-${Date.now()}`,
         })
+
+        // Trigger modal callback after a brief delay to ensure terminal state is updated
+        setTimeout(() => {
+          if (onCommandExecute) {
+            onCommandExecute(command.toLowerCase())
+          }
+        }, 100)
+      } else {
+        // Handle inline commands and other commands normally
+        const response = commands[command.toLowerCase()]
+        if (response) {
+          response.output.forEach((line, index) => {
+            newEntries.push({
+              type: 'output',
+              text: line,
+              id: `output-${Date.now()}-${index}`,
+            })
+          })
+        } else {
+          newEntries.push({
+            type: 'output',
+            text: `Command not found: ${command}. Type "help" for available commands.`,
+            id: `error-${Date.now()}`,
+          })
+        }
+      }
+
+      setEntries((prev) => [...prev.filter((e) => e.type !== 'hint'), ...newEntries])
+
+      // Auto-scroll to bottom after adding entries
+      setTimeout(() => {
+        if (terminalRef.current) {
+          terminalRef.current.scrollTop = terminalRef.current.scrollHeight
+        }
+      }, 100)
+    }
+
+    // Expose executeCommand method to parent components
+    useImperativeHandle(ref, () => ({
+      executeCommand,
+    }))
+
+    const handleContainerClick = () => {
+      if (inputRef.current) {
+        inputRef.current.focus()
       }
     }
 
-    setEntries((prev) => [...prev.filter((e) => e.type !== 'hint'), ...newEntries])
+    return (
+      <div
+        ref={terminalRef}
+        className='font-mono text-sm min-h-[200px] max-h-[400px] w-lg cursor-text overflow-y-auto'
+        onClick={handleContainerClick}
+      >
+        {/* Previous entries */}
+        {entries.map((entry) => (
+          <motion.div
+            key={entry.id}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {entry.type === 'command' && (
+              <div className='text-primary'>
+                <span className='text-muted-foreground'>{entry.prompt}</span>
+                <span className='ml-1'>{entry.text}</span>
+              </div>
+            )}
+            {entry.type === 'output' && <div className='text-white ml-0 mb-1'>{entry.text}</div>}
+            {entry.type === 'hint' && <div className='text-muted-foreground italic mb-1'>{entry.text}</div>}
+          </motion.div>
+        ))}
 
-    // Auto-scroll to bottom after adding entries
-    setTimeout(() => {
-      if (terminalRef.current) {
-        terminalRef.current.scrollTop = terminalRef.current.scrollHeight
-      }
-    }, 100)
-  }
+        {/* Current input line */}
+        <div className='text-primary flex items-center min-h-[20px]'>
+          <span className='text-muted-foreground shrink-0'>guest@sean-davis:~$</span>
+          <span className='ml-1 break-all'>{currentInput}</span>
+          <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity shrink-0`}>_</span>
+        </div>
 
-  // Expose executeCommand method to parent components
-  useImperativeHandle(ref, () => ({
-    executeCommand
-  }))
-
-  const handleContainerClick = () => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
-  }
-
-  return (
-    <div
-      ref={terminalRef}
-      className='font-mono text-sm min-h-[200px] max-h-[400px] w-lg cursor-text overflow-y-auto'
-      onClick={handleContainerClick}
-    >
-      {/* Previous entries */}
-      {entries.map((entry) => (
-        <motion.div
-          key={entry.id}
-          initial={{ opacity: 0, y: 5 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          {entry.type === 'command' && (
-            <div className='text-primary'>
-              <span className='text-muted-foreground'>{entry.prompt}</span>
-              <span className='ml-1'>{entry.text}</span>
-            </div>
-          )}
-          {entry.type === 'output' && <div className='text-white ml-0 mb-1'>{entry.text}</div>}
-          {entry.type === 'hint' && <div className='text-muted-foreground italic mb-1'>{entry.text}</div>}
-        </motion.div>
-      ))}
-
-      {/* Current input line */}
-      <div className='text-primary flex items-center min-h-[20px]'>
-        <span className='text-muted-foreground shrink-0'>guest@sean-davis:~$</span>
-        <span className='ml-1 break-all'>{currentInput}</span>
-        <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity shrink-0`}>_</span>
+        {/* Hidden input for capturing keystrokes */}
+        <input
+          ref={inputRef}
+          type='text'
+          value={currentInput}
+          onChange={(e) => setCurrentInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className='opacity-0 absolute -left-[9999px] pointer-events-none'
+          style={{ position: 'fixed' }}
+          autoComplete='off'
+          autoCapitalize='off'
+          autoCorrect='off'
+          spellCheck='false'
+        />
       </div>
-
-      {/* Hidden input for capturing keystrokes */}
-      <input
-        ref={inputRef}
-        type='text'
-        value={currentInput}
-        onChange={(e) => setCurrentInput(e.target.value)}
-        onKeyDown={handleKeyDown}
-        className='opacity-0 absolute -left-[9999px] pointer-events-none'
-        style={{ position: 'fixed' }}
-        autoComplete='off'
-        autoCapitalize='off'
-        autoCorrect='off'
-        spellCheck='false'
-      />
-    </div>
-  )
-})
+    )
+  }
+)
 
 InteractiveTerminal.displayName = 'InteractiveTerminal'
 

@@ -16,12 +16,6 @@ interface TerminalCommandIconsProps {
 
 const commandIcons: CommandIcon[] = [
   {
-    command: 'help',
-    icon: '❓',
-    label: 'Help',
-    description: 'Show available commands'
-  },
-  {
     command: 'whoami',
     icon: '👤',
     label: 'Who Am I',

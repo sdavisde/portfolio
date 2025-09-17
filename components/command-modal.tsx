@@ -133,7 +133,7 @@ export default function CommandModal({ isOpen, onClose, command, content }: Comm
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden bg-background border-border">
         <DialogHeader className="border-b border-border pb-4">
           <DialogTitle className="flex items-center space-x-3 text-xl">
