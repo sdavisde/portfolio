@@ -4,6 +4,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import InteractiveTerminal, { InteractiveTerminalRef } from '@/components/interactive-terminal'
 import TerminalCommandIcons from '@/components/terminal-command-icons'
+import MatrixRain from '@/components/matrix-rain'
 
 export default function Portfolio() {
   const terminalRef = useRef<InteractiveTerminalRef>(null)
@@ -14,9 +15,12 @@ export default function Portfolio() {
     }
   }
   return (
-    <main className='min-h-screen bg-background text-white'>
+    <main className='min-h-screen bg-background text-white relative'>
+      {/* Matrix Rain Background */}
+      <MatrixRain opacity={0.15} density={0.7} />
+
       {/* Hero Section */}
-      <section className='min-h-screen flex items-center justify-center px-6'>
+      <section className='min-h-screen flex items-center justify-center px-6 relative z-10'>
         <div className='max-w-6xl mx-auto'>
           <div className='flex flex-col lg:flex-row gap-12 items-center'>
             <div className='flex-shrink-0'>
