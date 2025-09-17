@@ -70,30 +70,20 @@ export default function TerminalCommandIcons({ onCommandClick }: TerminalCommand
     <div className="mt-4">
       <div className="flex flex-wrap gap-3 justify-center">
         {commandIcons.map((cmd) => (
-          <motion.button
+          <button
             key={cmd.command}
             onClick={() => handleIconClick(cmd.command)}
             onMouseEnter={() => setHoveredCommand(cmd.command)}
             onMouseLeave={() => setHoveredCommand(null)}
             className="relative group"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
           >
             <div className="w-12 h-12 bg-black/60 border border-primary/30 rounded-lg flex items-center justify-center text-xl hover:border-primary/60 hover:bg-black/80 transition-all duration-200">
               {cmd.icon}
             </div>
 
             {/* Tooltip */}
-            <motion.div
-              initial={{ opacity: 0, y: 10, scale: 0.8 }}
-              animate={{
-                opacity: hoveredCommand === cmd.command ? 1 : 0,
-                y: hoveredCommand === cmd.command ? -5 : 10,
-                scale: hoveredCommand === cmd.command ? 1 : 0.8
-              }}
-              transition={{ duration: 0.2 }}
-              className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 pointer-events-none z-50"
-            >
+            {hoveredCommand === cmd.command && (
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 pointer-events-none z-50">
               <div className="bg-black/90 border border-primary/40 rounded-lg px-3 py-2 text-xs whitespace-nowrap">
                 <div className="text-white font-medium">{cmd.label}</div>
                 <div className="text-muted-foreground">{cmd.description}</div>
@@ -102,8 +92,9 @@ export default function TerminalCommandIcons({ onCommandClick }: TerminalCommand
                 {/* Arrow pointing down */}
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-primary/40"></div>
               </div>
-            </motion.div>
-          </motion.button>
+              </div>
+            )}
+          </button>
         ))}
       </div>
 

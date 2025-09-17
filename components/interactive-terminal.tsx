@@ -18,6 +18,10 @@ export interface InteractiveTerminalRef {
   executeCommand: (command: string) => void
 }
 
+interface InteractiveTerminalProps {
+  onCommandExecute?: (command: string) => void
+}
+
 const commands: Record<string, CommandResponse> = {
   help: {
     output: [
@@ -175,7 +179,7 @@ const hints = [
   'Use "contact" to get in touch',
 ]
 
-const InteractiveTerminal = forwardRef<InteractiveTerminalRef>((props, ref) => {
+const InteractiveTerminal = forwardRef<InteractiveTerminalRef, InteractiveTerminalProps>(({ onCommandExecute }, ref) => {
   const [entries, setEntries] = useState<TerminalEntry[]>([
     {
       type: 'hint',
@@ -254,22 +258,42 @@ const InteractiveTerminal = forwardRef<InteractiveTerminalRef>((props, ref) => {
       return
     }
 
-    // Find and execute command
-    const response = commands[command.toLowerCase()]
-    if (response) {
-      response.output.forEach((line, index) => {
-        newEntries.push({
-          type: 'output',
-          text: line,
-          id: `output-${Date.now()}-${index}`,
-        })
-      })
-    } else {
+    // Commands that should open modal (detailed content)
+    const modalCommands = ['experience', 'skills', 'projects', 'about', 'contact']
+
+    // Commands that should display inline in terminal
+    const inlineCommands = ['help', 'whoami', 'pwd', 'date']
+
+    if (modalCommands.includes(command.toLowerCase())) {
+      // Add brief output and trigger modal
       newEntries.push({
         type: 'output',
-        text: `Command not found: ${command}. Type "help" for available commands.`,
-        id: `error-${Date.now()}`,
+        text: `Opening ${command} details...`,
+        id: `output-${Date.now()}`,
       })
+
+      // Trigger modal callback
+      if (onCommandExecute) {
+        onCommandExecute(command.toLowerCase())
+      }
+    } else {
+      // Handle inline commands and other commands normally
+      const response = commands[command.toLowerCase()]
+      if (response) {
+        response.output.forEach((line, index) => {
+          newEntries.push({
+            type: 'output',
+            text: line,
+            id: `output-${Date.now()}-${index}`,
+          })
+        })
+      } else {
+        newEntries.push({
+          type: 'output',
+          text: `Command not found: ${command}. Type "help" for available commands.`,
+          id: `error-${Date.now()}`,
+        })
+      }
     }
 
     setEntries((prev) => [...prev.filter((e) => e.type !== 'hint'), ...newEntries])

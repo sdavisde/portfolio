@@ -1,18 +1,32 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import InteractiveTerminal, { InteractiveTerminalRef } from '@/components/interactive-terminal'
 import TerminalCommandIcons from '@/components/terminal-command-icons'
 import MatrixRain from '@/components/matrix-rain'
+import CommandModal from '@/components/command-modal'
+import { commandContent } from '@/lib/command-content'
 
 export default function Portfolio() {
   const terminalRef = useRef<InteractiveTerminalRef>(null)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [currentCommand, setCurrentCommand] = useState('')
 
   const handleIconCommand = (command: string) => {
     if (terminalRef.current) {
       terminalRef.current.executeCommand(command)
     }
+  }
+
+  const handleTerminalCommand = (command: string) => {
+    setCurrentCommand(command)
+    setModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setModalOpen(false)
+    setCurrentCommand('')
   }
   return (
     <main className='min-h-screen bg-background text-white relative'>
@@ -45,13 +59,21 @@ export default function Portfolio() {
               <h1 className='text-4xl lg:text-6xl font-bold mb-6'>Sean Davis</h1>
               <p className='italic text-muted-foreground mb-2'>Try typing commands or click the icons below</p>
               <div className='bg-black/40 border border-primary/20 rounded-lg p-6 backdrop-blur-sm w-full max-w-[600px] mx-auto lg:mx-0'>
-                <InteractiveTerminal ref={terminalRef} />
+                <InteractiveTerminal ref={terminalRef} onCommandExecute={handleTerminalCommand} />
                 <TerminalCommandIcons onCommandClick={handleIconCommand} />
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Command Modal */}
+      <CommandModal
+        isOpen={modalOpen}
+        onClose={closeModal}
+        command={currentCommand}
+        content={commandContent[currentCommand] || { title: '', sections: [] }}
+      />
     </main>
   )
 }
