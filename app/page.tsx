@@ -31,7 +31,7 @@ export default function Portfolio() {
     setCurrentCommand('')
   }
   return (
-    <main className='min-h-screen bg-background text-white relative'>
+    <main className='min-h-screen bg-background text-white relative overflow-x-hidden'>
       {/* Matrix Rain Background */}
       <MatrixRain
         opacity={0.15}
@@ -39,10 +39,10 @@ export default function Portfolio() {
       />
 
       {/* Hero Section */}
-      <section className='min-h-screen flex items-center justify-center px-6 relative z-10'>
-        <div className='max-w-6xl mx-auto'>
-          <div className='flex flex-col lg:flex-row gap-12 items-center'>
-            <div className='flex-shrink-0'>
+      <section className='min-h-screen flex items-center justify-center px-4 sm:px-6 relative z-10'>
+        <div className='max-w-6xl mx-auto w-full'>
+          <div className='flex flex-col lg:flex-row gap-6 lg:gap-12 items-center'>
+            <div className='flex-shrink-0 mt-8 lg:mt-0'>
               <div className='hud-corner-brackets hud-glow'>
                 <div className='hud-corner-tl'></div>
                 <div className='hud-corner-tr'></div>
@@ -53,7 +53,7 @@ export default function Portfolio() {
                   alt='Sean Davis'
                   width={350}
                   height={450}
-                  className='rounded-lg'
+                  className='rounded-lg w-full max-w-[280px] sm:max-w-[350px] h-auto'
                   style={{
                     filter: 'grayscale(50%)',
                   }}
@@ -61,14 +61,19 @@ export default function Portfolio() {
               </div>
             </div>
             <div className='flex-1 text-center lg:text-left'>
-              <h1 className='text-4xl lg:text-6xl font-bold mb-4'>Sean Davis</h1>
-              <p className='text-muted-foreground flex items-center gap-2 mb-4'>
+              <h1 className='text-3xl sm:text-4xl lg:text-6xl font-bold mb-4'>Sean Davis</h1>
+              <div className='text-muted-foreground flex flex-wrap justify-center lg:justify-start items-center gap-2 mb-4'>
                 <Badge className='bg-red-900'>Software Engineer</Badge>
-                <Badge className='bg-green-900'>Guitarist</Badge>
-                <Badge className='bg-blue-900'>Dad</Badge>
+                <Badge className='bg-green-900'>Worship Guitarist</Badge>
+                <Badge className='bg-blue-900'>Father</Badge>
+              </div>
+              <p className='italic text-muted-foreground text-center'>
+                Welcome to Sean's Portfolio. You can navigate around using the terminal.
               </p>
-              <p className='italic text-muted-foreground mb-4'>Try typing "help" or click the icons below</p>
-              <div className='bg-black/40 border border-primary/20 rounded-lg p-6 backdrop-blur-sm w-full max-w-[600px] mx-auto lg:mx-0'>
+              <p className='italic text-muted-foreground/75 mb-4'>
+                Try typing "help" or navigate using the icons below.
+              </p>
+              <div className='bg-black/40 border border-primary/20 rounded-lg p-4 sm:p-6 backdrop-blur-sm w-full max-w-[600px] mx-auto lg:mx-0'>
                 <InteractiveTerminal
                   ref={terminalRef}
                   onCommandExecute={handleTerminalCommand}

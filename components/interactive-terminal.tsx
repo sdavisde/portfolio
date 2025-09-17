@@ -320,7 +320,7 @@ const InteractiveTerminal = forwardRef<InteractiveTerminalRef, InteractiveTermin
     return (
       <div
         ref={terminalRef}
-        className='font-mono text-sm min-h-[200px] max-h-[400px] w-lg cursor-text overflow-y-auto'
+        className='font-mono text-sm min-h-[200px] max-h-[400px] w-full cursor-text overflow-y-auto'
         onClick={handleContainerClick}
       >
         {/* Previous entries */}
