@@ -8,14 +8,54 @@ import SkillsTerminal from '@/components/terminals/skills-terminal'
 import ProjectsTerminal from '@/components/terminals/projects-terminal'
 import AboutTerminal from '@/components/terminals/about-terminal'
 import ContactTerminal from '@/components/terminals/contact-terminal'
+import Navigation from '@/components/navigation'
 import { useMultipleScrollTriggers } from '@/hooks/use-scroll-triggered-animation'
 
 export default function Portfolio() {
+  const [activeSection, setActiveSection] = useState(0)
+
   // Create scroll triggers for each terminal
   const terminalTriggers = useMultipleScrollTriggers(6, {
     threshold: 0.1,
     rootMargin: '0px 0px -200px 0px',
   })
+
+  // Track active section based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const windowHeight = window.innerHeight
+
+      // Calculate which section should be active based on scroll position
+      if (scrollY < windowHeight * 0.5) {
+        setActiveSection(0) // Home
+      } else {
+        // Calculate which terminal section is active (1-6)
+        const terminalSection = Math.min(
+          Math.floor((scrollY - windowHeight * 0.5) / windowHeight) + 1,
+          6
+        )
+        setActiveSection(terminalSection)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Set initial state
+
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Navigation handler
+  const handleNavigate = (index: number) => {
+    if (index === 0) {
+      // Home - scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      // Terminal sections - scroll to appropriate position
+      const targetScroll = window.innerHeight * (0.5 + (index - 1))
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' })
+    }
+  }
 
   const terminalConfigs = [
     {
@@ -70,6 +110,9 @@ export default function Portfolio() {
 
   return (
     <main className='min-h-screen bg-background text-white overflow-x-hidden'>
+      {/* Navigation */}
+      <Navigation activeSection={activeSection} onNavigate={handleNavigate} />
+
       {/* Hero Background Section - Fixed at top */}
       <section className='fixed top-0 left-0 w-full h-screen flex items-center justify-center px-6 z-0'>
         <div className='max-w-6xl mx-auto'>
@@ -125,8 +168,8 @@ export default function Portfolio() {
                       y: currentOffset.y,
                     },
                     animate: {
-                      opacity: state.isVisible ? 1 : 0,
-                      scale: state.isVisible ? 1 : 0.9,
+                      opacity: state.isVisible && state.hasUserScrolled ? 1 : 0,
+                      scale: state.isVisible && state.hasUserScrolled ? 1 : 0.9,
                       x: currentOffset.x,
                       y: currentOffset.y,
                     },
@@ -136,8 +179,8 @@ export default function Portfolio() {
                       ease: [0.25, 0.46, 0.45, 0.94],
                     },
                     style: {
-                      filter: state.isVisible ? 'none' : 'blur(1px)',
-                      boxShadow: state.isVisible
+                      filter: state.isVisible && state.hasUserScrolled ? 'none' : 'blur(1px)',
+                      boxShadow: state.isVisible && state.hasUserScrolled
                         ? `${Math.abs(currentOffset.x) * 0.2}px ${
                             Math.abs(currentOffset.y) * 0.2
                           }px 25px rgba(0, 0, 0, 0.4)`

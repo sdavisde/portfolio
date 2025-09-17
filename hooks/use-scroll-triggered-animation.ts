@@ -9,6 +9,7 @@ interface ScrollTriggerState {
   isVisible: boolean
   hasBeenVisible: boolean
   animationDelay: number
+  hasUserScrolled: boolean
 }
 
 export function useScrollTriggeredAnimation(
@@ -19,10 +20,22 @@ export function useScrollTriggeredAnimation(
     isVisible: false,
     hasBeenVisible: false,
     animationDelay: 0,
+    hasUserScrolled: false,
   })
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Track if user has scrolled from the top
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 50 // Buffer to account for small movements
+      setState((prev) => ({
+        ...prev,
+        hasUserScrolled: scrolled,
+      }))
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
     const element = ref.current
     if (!element) return
 
@@ -43,7 +56,10 @@ export function useScrollTriggeredAnimation(
 
     observer.observe(element)
 
-    return () => observer.disconnect()
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+    }
   }, [threshold, rootMargin])
 
   return [ref, state]

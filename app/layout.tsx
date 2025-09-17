@@ -26,25 +26,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang='en'
       className='scroll-smooth'
     >
-      <body className={`${inter.className} dark`}>{children}</body>
+      <body className={`${inter.className} dark`}>
+        {children}
 
-      {/* Footer */}
-      <footer className='py-8 px-6 border-t border-border'>
-        <div className='max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center'>
-          <p className='text-gray-400 mb-4 md:mb-0'>2025 Sean Davis. If something inspires you, share it.</p>
-          <div className='flex space-x-6'>
-            {socialMediaConfig.map((link, index) => (
-              <Link
-                key={index}
-                href={link.href}
-                className='text-muted-foreground hover:text-foreground transition-colors'
-              >
-                {link.icon}
-              </Link>
-            ))}
+        {/* Footer */}
+        <footer className='py-8 px-6 border-t border-border'>
+          <div className='max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center'>
+            <p className='text-gray-400 mb-4 md:mb-0'>2025 Sean Davis. If something inspires you, share it.</p>
+            <div className='flex space-x-6'>
+              {socialMediaConfig.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className='text-muted-foreground hover:text-foreground transition-colors'
+                >
+                  {link.icon}
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </body>
     </html>
   )
 }
