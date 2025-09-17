@@ -9,6 +9,7 @@ import ProjectsTerminal from '@/components/terminals/projects-terminal'
 import AboutTerminal from '@/components/terminals/about-terminal'
 import ContactTerminal from '@/components/terminals/contact-terminal'
 import Navigation from '@/components/navigation'
+import InteractiveTerminal from '@/components/interactive-terminal'
 import { useMultipleScrollTriggers } from '@/hooks/use-scroll-triggered-animation'
 
 export default function Portfolio() {
@@ -118,22 +119,28 @@ export default function Portfolio() {
         <div className='max-w-6xl mx-auto'>
           <div className='flex flex-col lg:flex-row gap-12 items-center'>
             <div className='flex-shrink-0'>
-              <Image
-                src='/sean-davis.JPEG'
-                alt='Sean Davis'
-                width={350}
-                height={450}
-                className='rounded-lg'
-                style={{
-                  filter: 'grayscale(50%)',
-                }}
-              />
+              <div className='hud-corner-brackets hud-glow'>
+                <div className='hud-corner-tl'></div>
+                <div className='hud-corner-tr'></div>
+                <div className='hud-corner-bl'></div>
+                <div className='hud-corner-br'></div>
+                <Image
+                  src='/sean-davis.JPEG'
+                  alt='Sean Davis'
+                  width={350}
+                  height={450}
+                  className='rounded-lg'
+                  style={{
+                    filter: 'grayscale(50%)',
+                  }}
+                />
+              </div>
             </div>
             <div className='flex-1 text-center lg:text-left'>
-              <h1 className='text-4xl lg:text-6xl font-bold mb-4'>Sean Davis</h1>
-              <p className='text-xl text-primary'>&gt; Software Engineer</p>
-              <p className='text-xl text-muted-foreground'>&gt; Guitarist</p>
-              <p className='text-xl text-muted-foreground'>&gt; Dad</p>
+              <h1 className='text-4xl lg:text-6xl font-bold mb-6'>Sean Davis</h1>
+              <div className='bg-black/40 border border-primary/20 rounded-lg p-6 backdrop-blur-sm w-full max-w-[600px] mx-auto lg:mx-0'>
+                <InteractiveTerminal />
+              </div>
             </div>
           </div>
         </div>

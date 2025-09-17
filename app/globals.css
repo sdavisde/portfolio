@@ -180,3 +180,75 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(16, 185, 129, 0.7);
 }
+
+/* HUD Interface Elements */
+.hud-corner-brackets {
+  position: relative;
+}
+
+.hud-corner-brackets::before,
+.hud-corner-brackets::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid oklch(0.62 0.19 24.45);
+  z-index: 1;
+}
+
+.hud-corner-brackets::before {
+  top: -8px;
+  left: -8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.hud-corner-brackets::after {
+  bottom: -8px;
+  right: -8px;
+  border-left: none;
+  border-top: none;
+}
+
+.hud-corner-brackets .hud-corner-tl,
+.hud-corner-brackets .hud-corner-tr,
+.hud-corner-brackets .hud-corner-bl,
+.hud-corner-brackets .hud-corner-br {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid oklch(0.62 0.19 24.45);
+  z-index: 1;
+}
+
+.hud-corner-brackets .hud-corner-tl {
+  top: -8px;
+  left: -8px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.hud-corner-brackets .hud-corner-tr {
+  top: -8px;
+  right: -8px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.hud-corner-brackets .hud-corner-bl {
+  bottom: -8px;
+  left: -8px;
+  border-right: none;
+  border-top: none;
+}
+
+.hud-corner-brackets .hud-corner-br {
+  bottom: -8px;
+  right: -8px;
+  border-left: none;
+  border-top: none;
+}
+
+.hud-glow {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+}
