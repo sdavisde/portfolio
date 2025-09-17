@@ -18,27 +18,140 @@ const commands: Record<string, CommandResponse> = {
   help: {
     output: [
       'Available commands:',
-      '  whoami     - Display user information',
-      '  cat roles.txt - Show my roles',
-      '  ls skills/ - List technical skills',
-      '  pwd        - Show current directory',
-      '  date       - Show current date',
-      '  clear      - Clear terminal',
+      '  whoami         - Display user information',
+      '  experience     - Show work experience',
+      '  skills         - Display technical skills',
+      '  projects       - List featured projects',
+      '  about          - Learn more about me',
+      '  contact        - Get contact information',
+      '  pwd            - Show current directory',
+      '  date           - Show current date',
+      '  clear          - Clear terminal',
       '',
       'Try typing any of these commands!',
     ],
   },
   whoami: {
-    output: ['Sean Davis'],
+    output: ['Sean Davis - Software Engineer, Guitarist, Dad'],
   },
-  'cat roles.txt': {
-    output: ['> Software Engineer', '> Guitarist', '> Dad'],
-  },
-  'ls skills/': {
+  experience: {
     output: [
-      'next.js      typescript.ts    react.jsx',
-      'node.js      tailwind.css     framer-motion.js',
-      'python.py    postgres.sql     docker.yml',
+      '',
+      '=== WORK EXPERIENCE ===',
+      '',
+      '📍 Legends - Senior Software Engineer (2022 - Present)',
+      '   • Led technical operations for $100M+ annual revenue e-commerce platform',
+      '   • Architected multi-tenant Next.js theme system reducing maintenance costs by 90%',
+      '   • Implemented regression testing frameworks cutting production issues by 95%',
+      '   • Managed team of 10 offshore developers',
+      '   • Served global sports brands including Real Madrid, Borussia Dortmund',
+      '',
+      '📍 Reynolds and Reynolds - Software Engineer (2020 - 2022)',
+      '   • Built high-performance APIs and responsive interfaces',
+      '   • Developed accessibility-compliant systems for 10K+ users',
+      '   • Implemented modern React patterns and TypeScript best practices',
+      '   • Collaborated on automotive industry solutions',
+      '',
+    ],
+  },
+  skills: {
+    output: [
+      '',
+      '=== TECHNICAL SKILLS ===',
+      '',
+      '🚀 Frontend Mastery',
+      '   • Next.js - 15+ production apps, 95+ Lighthouse scores',
+      '   • TypeScript - 100% type coverage, zero runtime errors',
+      '   • React - 5+ years, component libraries',
+      '   • Tailwind CSS - Utility-first styling',
+      '',
+      '⚙️  Backend & Database',
+      '   • Node.js - RESTful & GraphQL APIs',
+      '   • PostgreSQL - Optimized queries, migrations',
+      '   • Supabase - Real-time, auth, storage',
+      '   • Java - Enterprise applications',
+      '',
+      '💳 E-commerce & Payments',
+      '   • Stripe, PayPal, Apple Pay integration',
+      '   • Global commerce (15+ languages, RTL)',
+      '   • Performance optimization (sub-2s load times)',
+      '   • 99.9% uptime maintenance',
+      '',
+      '🔧 DevOps & Tools',
+      '   • CI/CD pipelines (Vercel, AWS)',
+      '   • Docker containerization',
+      '   • Git version control',
+      '   • Testing frameworks (Jest, Cypress)',
+      '',
+    ],
+  },
+  projects: {
+    output: [
+      '',
+      '=== FEATURED PROJECTS ===',
+      '',
+      '🏆 Real Madrid Official Store',
+      '   E-commerce platform for global sports brand',
+      '   Led frontend development handling millions of global fans with',
+      '   seamless checkout flows and multilingual support.',
+      '   Tech: Next.js, TypeScript, Stripe, Contentful',
+      '',
+      '🤖 QueryBase',
+      '   AI-powered knowledge base for creating developer documentation',
+      '   and FAQs with intelligent search and content generation.',
+      '   Tech: AI, Next.js, Supabase, Tailwind',
+      '',
+      '⚡ Worklog',
+      '   Rust-based AI KPI tracking CLI tool for tracking productivity',
+      '   metrics with AI insights and performance analytics.',
+      '   Tech: Rust, AI, CLI, Performance',
+      '',
+      '🏕️  Dusty Trails Tres Dias',
+      '   Complete management system for nonprofit organization with',
+      '   user management, events, and donations.',
+      '   Tech: Full-stack, Database, Auth, Management',
+      '',
+    ],
+  },
+  about: {
+    output: [
+      '',
+      '=== ABOUT ME ===',
+      '',
+      "I'm a software engineer passionate about building scalable,",
+      'efficient, and human-centered applications. With over 4 years',
+      'of experience, I\'ve worked on everything from high-traffic',
+      'e-commerce platforms to personal projects that solve real-world',
+      'problems.',
+      '',
+      'My approach focuses on clarity, efficiency, and human-centered',
+      'design. I believe in writing clean, maintainable code and',
+      'creating experiences that users love. Whether it\'s optimizing',
+      'a checkout flow for millions of users or building a simple CLI',
+      'tool, I bring the same attention to detail and commitment to',
+      'quality.',
+      '',
+      'When I\'m not coding, you\'ll find me exploring new technologies,',
+      'contributing to open source projects, or working on personal',
+      'initiatives that combine my technical skills with my interests',
+      'in AI, productivity tools, and community impact.',
+      '',
+      '💭 "Let\'s build something amazing together!"',
+      '',
+    ],
+  },
+  contact: {
+    output: [
+      '',
+      '=== CONTACT INFORMATION ===',
+      '',
+      '📧 Email: sean@example.com',
+      '💼 LinkedIn: linkedin.com/in/seandavis',
+      '🐙 GitHub: github.com/sdavisde',
+      '🌍 Location: Remote / Available for relocation',
+      '',
+      '💡 Ready to collaborate on your next project!',
+      '',
     ],
   },
   pwd: {
@@ -51,8 +164,11 @@ const commands: Record<string, CommandResponse> = {
 
 const hints = [
   'Try typing "help" to see available commands',
-  'Type "whoami" to learn about me',
-  'Use "ls skills/" to see my technical skills',
+  'Type "experience" to see my work history',
+  'Use "skills" to view my technical expertise',
+  'Try "projects" to see my featured work',
+  'Type "about" to learn more about me',
+  'Use "contact" to get in touch',
 ]
 
 export default function InteractiveTerminal() {
@@ -67,6 +183,7 @@ export default function InteractiveTerminal() {
   const [showCursor, setShowCursor] = useState(true)
   const [hintIndex, setHintIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
+  const terminalRef = useRef<HTMLDivElement>(null)
 
   // Cursor blink effect
   useEffect(() => {
@@ -152,6 +269,13 @@ export default function InteractiveTerminal() {
     }
 
     setEntries((prev) => [...prev.filter((e) => e.type !== 'hint'), ...newEntries])
+
+    // Auto-scroll to bottom after adding entries
+    setTimeout(() => {
+      if (terminalRef.current) {
+        terminalRef.current.scrollTop = terminalRef.current.scrollHeight
+      }
+    }, 100)
   }
 
   const handleContainerClick = () => {
@@ -162,7 +286,8 @@ export default function InteractiveTerminal() {
 
   return (
     <div
-      className='font-mono text-sm min-h-[200px] w-lg cursor-text'
+      ref={terminalRef}
+      className='font-mono text-sm min-h-[200px] max-h-[400px] w-lg cursor-text overflow-y-auto'
       onClick={handleContainerClick}
     >
       {/* Previous entries */}
